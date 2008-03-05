@@ -97,7 +97,10 @@ namespace boost { namespace numeric
         };                                                                                      \
         template<typename Arg, typename EnableIf>                                               \
         struct Name ## _base                                                                    \
-          : std::unary_function<Arg, typename result_of_ ## Name<Arg>::type>                    \
+          : std::unary_function<                                                                \
+                typename remove_const<Arg>::type                                                \
+              , typename result_of_ ## Name<Arg>::type                                          \
+            >                                                                                   \
         {                                                                                       \
             typename result_of_ ## Name<Arg>::type operator ()(Arg &arg) const                  \
             {                                                                                   \
@@ -133,7 +136,11 @@ namespace boost { namespace numeric
         };                                                                                      \
         template<typename Left, typename Right, typename EnableIf>                              \
         struct Name ## _base                                                                    \
-          : std::binary_function<Left, Right, typename result_of_ ## Name<Left, Right>::type>   \
+          : std::binary_function<                                                               \
+                typename remove_const<Left>::type                                               \
+              , typename remove_const<Right>::type                                              \
+              , typename result_of_ ## Name<Left, Right>::type                                  \
+            >                                                                                   \
         {                                                                                       \
             typename result_of_ ## Name<Left, Right>::type                                      \
             operator ()(Left &left, Right &right) const                                         \
@@ -421,20 +428,20 @@ namespace boost { namespace numeric
     }
 
     template<typename T>
-    struct empty
+    struct default_
     {
-        typedef empty type;
+        typedef default_ type;
         typedef T value_type;
         static T const value;
 
         operator T const & () const
         {
-            return empty::value;
+            return default_::value;
         }
     };
 
     template<typename T>
-    T const empty<T>::value = T();
+    T const default_<T>::value = T();
 
     template<typename T>
     struct one
@@ -469,13 +476,13 @@ namespace boost { namespace numeric
     T const zero<T>::value = T();
 
     template<typename T>
-    struct one_or_empty
-      : mpl::if_<is_empty<T>, empty<T>, one<T> >::type
+    struct one_or_default
+      : mpl::if_<is_empty<T>, default_<T>, one<T> >::type
     {};
 
     template<typename T>
-    struct zero_or_empty
-      : mpl::if_<is_empty<T>, empty<T>, zero<T> >::type
+    struct zero_or_default
+      : mpl::if_<is_empty<T>, default_<T>, zero<T> >::type
     {};
 
 }} // namespace boost::numeric

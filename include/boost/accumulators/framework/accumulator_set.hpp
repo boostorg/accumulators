@@ -54,6 +54,7 @@ namespace detail
         }
 
     private:
+        accumulator_visitor &operator =(accumulator_visitor const &);
         Args const &args;
     };
 
@@ -317,9 +318,9 @@ struct accumulator_set
     {
         // You can only drop the features that you have specified explicitly
         typedef typename apply<Feature>::type the_accumulator;
-        BOOST_MPL_ASSERT((detail::contains_feature_of<Features, the_accumulator>)); 
+        BOOST_MPL_ASSERT((detail::contains_feature_of<Features, the_accumulator>));
 
-        typedef 
+        typedef
             typename feature_of<typename as_feature<Feature>::type>::type
         the_feature;
 

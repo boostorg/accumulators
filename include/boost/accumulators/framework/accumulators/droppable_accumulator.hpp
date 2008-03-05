@@ -13,6 +13,7 @@
 #include <boost/mpl/apply.hpp>
 #include <boost/aligned_storage.hpp>
 #include <boost/accumulators/framework/depends_on.hpp> // for feature_of
+#include <boost/accumulators/framework/parameters/accumulator.hpp> // for accumulator
 
 namespace boost { namespace accumulators
 {
@@ -41,13 +42,14 @@ namespace boost { namespace accumulators
                 acc.add_ref(this->args_);
 
                 // Also add_ref accumulators that this feature depends on
-                this->args_[accumulator].template 
+                this->args_[accumulator].template
                     visit_if<detail::contains_feature_of_<dependencies> >(
                         *this
                 );
             }
 
         private:
+            add_ref_visitor &operator =(add_ref_visitor const &);
             Args const &args_;
         };
 
@@ -77,7 +79,7 @@ namespace boost { namespace accumulators
 
                     acc.drop(this->args_);
                     // Also drop accumulators that this feature depends on
-                    this->args_[accumulator].template 
+                    this->args_[accumulator].template
                         visit_if<detail::contains_feature_of_<dependencies> >(
                             *this
                     );
@@ -85,6 +87,7 @@ namespace boost { namespace accumulators
             }
 
         private:
+            drop_visitor &operator =(drop_visitor const &);
             Args const &args_;
         };
 
@@ -101,6 +104,7 @@ namespace boost { namespace accumulators
     struct droppable_accumulator_base
       : Accumulator
     {
+        typedef droppable_accumulator_base base;
         typedef mpl::true_ is_droppable;
         typedef typename Accumulator::result_type result_type;
 
@@ -121,7 +125,7 @@ namespace boost { namespace accumulators
         }
 
         template<typename Args>
-        void add_ref(Args const &args)
+        void add_ref(Args const &)
         {
             ++this->ref_count_;
         }
@@ -155,7 +159,7 @@ namespace boost { namespace accumulators
     {
         template<typename Args>
         droppable_accumulator(Args const &args)
-          : droppable_accumulator_base<Accumulator>(args)
+          : droppable_accumulator::base(args)
         {
         }
     };
@@ -257,7 +261,7 @@ namespace boost { namespace accumulators
             typedef typename as_feature<Feature>::type feature_type;
             typedef typename feature_type::dependencies tmp_dependencies_;
 
-            typedef 
+            typedef
                 typename mpl::transform<
                     typename feature_type::dependencies
                   , as_droppable<mpl::_1>

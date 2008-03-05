@@ -285,9 +285,7 @@ struct feature_of<tag::immediate_weighted_mean_of_variates<VariateType, VariateT
 //{
 //    template<typename Args>
 //    droppable_accumulator(Args const &args)
-//      : droppable_accumulator_base<
-//            with_cached_result<impl::mean_impl<Sample, SumFeature> >
-//        >(args)
+//      : droppable_accumulator::base(args)
 //    {
 //    }
 //};

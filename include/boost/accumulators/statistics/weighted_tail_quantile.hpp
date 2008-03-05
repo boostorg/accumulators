@@ -28,33 +28,38 @@
 #include <boost/accumulators/statistics/tail_quantile.hpp>
 #include <boost/accumulators/statistics/parameters/quantile_probability.hpp>
 
+#ifdef _MSC_VER
+# pragma warning(push)
+# pragma warning(disable: 4127) // conditional expression is constant
+#endif
+
 namespace boost { namespace accumulators
 {
 
 namespace impl
-{  
+{
     ///////////////////////////////////////////////////////////////////////////////
     // weighted_tail_quantile_impl
     //  Tail quantile estimation based on order statistics of weighted samples
     /**
         @brief Tail quantile estimation based on order statistics of weighted samples (for both left and right tails)
 
-        An estimator \f$\hat{q}\f$ of tail quantiles with level \f$\alpha\f$ based on order statistics 
-        \f$X_{1:n} \leq X_{2:n} \leq\dots\leq X_{n:n}\f$ of weighted samples are given by \f$X_{\lambda:n}\f$ (left tail) 
+        An estimator \f$\hat{q}\f$ of tail quantiles with level \f$\alpha\f$ based on order statistics
+        \f$X_{1:n} \leq X_{2:n} \leq\dots\leq X_{n:n}\f$ of weighted samples are given by \f$X_{\lambda:n}\f$ (left tail)
         and \f$X_{\rho:n}\f$ (right tail), where
-        
+
             \f[
                 \lambda = \inf\left\{ l \left| \frac{1}{\bar{w}_n}\sum_{i=1}^{l} w_i \geq \alpha \right. \right\}
             \f]
-        
+
         and
-        
+
             \f[
                 \rho = \sup\left\{ r \left| \frac{1}{\bar{w}_n}\sum_{i=r}^{n} w_i \geq (1 - \alpha) \right. \right\},
             \f]
-            
+
         \f$n\f$ being the number of samples and \f$\bar{w}_n\f$ the sum of all weights.
-                
+
         @param quantile_probability
     */
     template<typename Sample, typename Weight, typename LeftRight>
@@ -64,9 +69,9 @@ namespace impl
         typedef typename numeric::functional::average<Weight, std::size_t>::result_type float_type;
         // for boost::result_of
         typedef Sample result_type;
-        
+
         weighted_tail_quantile_impl(dont_care) {}
-        
+
         template<typename Args>
         result_type result(Args const &args) const
         {
@@ -75,10 +80,10 @@ namespace impl
 
             std::size_t n = 0;
             Weight sum = Weight(0);
-            
+
             while (sum < threshold)
             {
-                if (n < tail_weights(args).size())
+                if (n < static_cast<std::size_t>(tail_weights(args).size()))
                 {
                     sum += *(tail_weights(args).begin() + n);
                     n++;
@@ -98,8 +103,8 @@ namespace impl
                     }
                 }
             }
-            
-            // Note that the cached samples of the left are sorted in ascending order, 
+
+            // Note that the cached samples of the left are sorted in ascending order,
             // whereas the samples of the right tail are sorted in descending order
             return *(boost::begin(tail(args)) + n - 1);
         }
@@ -131,5 +136,9 @@ namespace extract
 using extract::weighted_tail_quantile;
 
 }} // namespace boost::accumulators
+
+#ifdef _MSC_VER
+# pragma warning(pop)
+#endif
 
 #endif

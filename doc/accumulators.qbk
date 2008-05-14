@@ -32,9 +32,9 @@
 [def _left_or_right_         '''<replaceable>left-or-right</replaceable>''']
 [def _implementation_defined_ '''<replaceable>implementation-defined</replaceable>''']
 [def _boost_                 [@http://www.boost.org Boost]]
-[def _mpl_                   [@../../libs/mpl MPL]]
-[def _mpl_lambda_expression_ [@../../libs/mpl/doc/refmanual/lambda-expression.html MPL Lambda Expression]]
-[def _parameter_             [@../../libs/parameter Boost.Parameter]]
+[def _mpl_                   [@/libs/mpl MPL]]
+[def _mpl_lambda_expression_ [@/libs/mpl/doc/refmanual/lambda-expression.html MPL Lambda Expression]]
+[def _parameter_             [@/libs/parameter Boost.Parameter]]
 [def _accumulator_set_       [classref boost::accumulators::accumulator_set `accumulator_set<>`]]
 [def _accumulator_base_      [classref boost::accumulators::accumulator_base `accumulator_base`]]
 [def _depends_on_            [classref boost::accumulators::depends_on `depends_on<>`]]
@@ -732,7 +732,7 @@ you could always define `impl` explicitly:
         };
     };
 
-Here, `impl` is a binary [@../../libs/mpl/doc/refmanual/metafunction-class.html
+Here, `impl` is a binary [@/libs/mpl/doc/refmanual/metafunction-class.html
 MPL Metafunction Class], which is a kind of _mpl_lambda_expression_. The nested
 `apply<>` template is part of the metafunction class protocol and tells MPL how
 to to build the accumulator type given the sample and weight types.
@@ -803,7 +803,7 @@ we must make `moment` a function template. Here's what the definition of the
     }}                                            
 
 The return type deserves some explanation. Every _accumulator_set_ type
-is actually a unary [@../../libs/mpl/doc/refmanual/metafunction-class.html
+is actually a unary [@/libs/mpl/doc/refmanual/metafunction-class.html
 MPL Metafunction Class]. When you `mpl::apply<>` an _accumulator_set_ and
 a feature, the result is the type of the accumulator within the set that
 implements that feature. And every accumulator provides a nested `result_type`

@@ -61,7 +61,7 @@ namespace impl
 
         template<typename Args>
         p_square_quantile_impl(Args const &args)
-          : p(is_same<Impl, for_median>::value ? 0.5 : args[quantile_probability | 0.5])
+          : p(is_same<Impl, for_median>::value ? float_type(0.5) : args[quantile_probability | float_type(0.5)])
           , heights()
           , actual_positions()
           , desired_positions()
@@ -69,20 +69,21 @@ namespace impl
         {
             for(std::size_t i = 0; i < 5; ++i)
             {
-                this->actual_positions[i] = i + 1.;
+                this->actual_positions[i] = i + float_type(1.);
             }
 
-            this->desired_positions[0] = 1.;
-            this->desired_positions[1] = 1. + 2. * this->p;
-            this->desired_positions[2] = 1. + 4. * this->p;
-            this->desired_positions[3] = 3. + 2. * this->p;
-            this->desired_positions[4] = 5.;
+            this->desired_positions[0] = float_type(1.);
+            this->desired_positions[1] = float_type(1.) + float_type(2.) * this->p;
+            this->desired_positions[2] = float_type(1.) + float_type(4.) * this->p;
+            this->desired_positions[3] = float_type(3.) + float_type(2.) * this->p;
+            this->desired_positions[4] = float_type(5.);
 
-            this->positions_increments[0] = 0.;
-            this->positions_increments[1] = this->p / 2.;
+
+            this->positions_increments[0] = float_type(0.);
+            this->positions_increments[1] = this->p / float_type(2.);
             this->positions_increments[2] = this->p;
-            this->positions_increments[3] = (1. + this->p) / 2.;
-            this->positions_increments[4] = 1.;
+            this->positions_increments[3] = (float_type(1.) + this->p) / float_type(2.);
+            this->positions_increments[4] = float_type(1.);
         }
 
         template<typename Args>
@@ -156,7 +157,7 @@ namespace impl
                     float_type hp = (this->heights[i + 1] - this->heights[i]) / dp;
                     float_type hm = (this->heights[i - 1] - this->heights[i]) / dm;
 
-                    if((d >= 1. && dp > 1.) || (d <= -1. && dm < -1.))
+                    if((d >= float_type(1.) && dp > float_type(1.)) || (d <= float_type(-1.) && dm < float_type(-1.)))
                     {
                         short sign_d = static_cast<short>(d / std::abs(d));
 
@@ -171,11 +172,11 @@ namespace impl
                         else
                         {
                             // use linear formula
-                            if(d > 0)
+                            if(d > float_type(0))
                             {
                                 this->heights[i] += hp;
                             }
-                            if(d < 0)
+                            if(d < float_type(0))
                             {
                                 this->heights[i] -= hm;
                             }

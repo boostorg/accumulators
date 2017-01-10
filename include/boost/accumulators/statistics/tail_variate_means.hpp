@@ -89,6 +89,13 @@ namespace impl
         template<typename Args>
         result_type result(Args const &args) const
         {
+            if (args[quantile_probability] < 0 || args[quantile_probability] > 1)
+            {
+                std::ostringstream msg;
+                msg << "quantile_probability = " << args[quantile_probability] << " is not in valid range [0, 1]";
+                boost::throw_exception(std::logic_error(msg.str()));
+            }
+
             std::size_t cnt = count(args);
 
             std::size_t n = static_cast<std::size_t>(

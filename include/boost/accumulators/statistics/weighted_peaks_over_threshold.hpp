@@ -148,6 +148,12 @@ namespace impl
           , fit_parameters_(boost::make_tuple(0., 0., 0.))
           , is_dirty_(true)
         {
+            if (this->threshold_probability_ < 0 || this->threshold_probability_ > 1)
+            {
+                std::ostringstream msg;
+                msg << "pot_threshold_probability = " << this->threshold_probability_ << " is not in valid range [0, 1]";
+                boost::throw_exception(std::logic_error(msg.str()));
+            }
         }
 
         void operator ()(dont_care)

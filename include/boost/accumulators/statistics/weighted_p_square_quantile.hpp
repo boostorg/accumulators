@@ -62,7 +62,10 @@ namespace impl {
 
         template<typename Args>
         weighted_p_square_quantile_impl(Args const &args)
-          : p(is_same<Impl, for_median>::value ? 0.5 : args[quantile_probability | 0.5])
+          : p(is_same<Impl, for_median>::value ? 0.5
+                  : is_same<Impl, for_first_quartile>::value ? 0.25
+                  : is_same<Impl, for_third_quartile>::value ? 0.75
+                  : args[quantile_probability | 0.5])
           , heights()
           , actual_positions()
           , desired_positions()
@@ -232,6 +235,16 @@ namespace tag
     {
         typedef accumulators::impl::weighted_p_square_quantile_impl<mpl::_1, mpl::_2, for_median> impl;
     };
+    struct weighted_p_square_quantile_for_first_quartile
+      : depends_on<count, sum_of_weights>
+    {
+        typedef accumulators::impl::weighted_p_square_quantile_impl<mpl::_1, mpl::_2, for_first_quartile> impl;
+    };
+    struct weighted_p_square_quantile_for_third_quartile
+      : depends_on<count, sum_of_weights>
+    {
+        typedef accumulators::impl::weighted_p_square_quantile_impl<mpl::_1, mpl::_2, for_third_quartile> impl;
+    };
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -242,13 +255,19 @@ namespace extract
 {
     extractor<tag::weighted_p_square_quantile> const weighted_p_square_quantile = {};
     extractor<tag::weighted_p_square_quantile_for_median> const weighted_p_square_quantile_for_median = {};
+    extractor<tag::weighted_p_square_quantile_for_first_quartile> const weighted_p_square_quantile_for_first_quartile = {};
+    extractor<tag::weighted_p_square_quantile_for_third_quartile> const weighted_p_square_quantile_for_third_quartile = {};
 
     BOOST_ACCUMULATORS_IGNORE_GLOBAL(weighted_p_square_quantile)
     BOOST_ACCUMULATORS_IGNORE_GLOBAL(weighted_p_square_quantile_for_median)
+    BOOST_ACCUMULATORS_IGNORE_GLOBAL(weighted_p_square_quantile_for_first_quartile)
+    BOOST_ACCUMULATORS_IGNORE_GLOBAL(weighted_p_square_quantile_for_third_quartile)
 }
 
 using extract::weighted_p_square_quantile;
 using extract::weighted_p_square_quantile_for_median;
+using extract::weighted_p_square_quantile_for_first_quartile;
+using extract::weighted_p_square_quantile_for_third_quartile;
 
 }} // namespace boost::accumulators
 

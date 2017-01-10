@@ -14,7 +14,7 @@
 #include <functional>
 #include <boost/config/no_tr1/cmath.hpp> // pow
 #include <sstream> // stringstream
-#include <stdexcept> // runtime_error
+#include <stdexcept> // logic_error
 #include <boost/throw_exception.hpp>
 #include <boost/range.hpp>
 #include <boost/mpl/if.hpp>
@@ -257,7 +257,7 @@ namespace impl
                     {
                         std::ostringstream msg;
                         msg << "index n = " << n << " is not in valid range [0, " << tail(args).size() << ")";
-                        boost::throw_exception(std::runtime_error(msg.str()));
+                        boost::throw_exception(std::logic_error(msg.str()));
                         return boost::make_tuple(Sample(0), Sample(0), Sample(0));
                     }
                 }

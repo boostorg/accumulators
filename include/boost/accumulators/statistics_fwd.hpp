@@ -104,6 +104,18 @@ namespace tag
     struct p_square_cumulative_distribution;
     struct p_square_quantile;
     struct p_square_quantile_for_median;
+    struct first_quartile;
+    struct third_quartile;
+    struct weighted_first_quartile;
+    struct weighted_third_quartile;
+    struct with_density_weighted_first_quartile;
+    struct with_density_weighted_third_quartile;
+    struct with_density_first_quartile;
+    struct with_density_third_quartile;
+    struct with_p_square_cumulative_distribution_first_quartile;
+    struct with_p_square_cumulative_distribution_third_quartile;
+    struct with_p_square_cumulative_distribution_weighted_first_quartile;
+    struct with_p_square_cumulative_distribution_weighted_third_quartile;
     struct skewness;
     struct sum;
     struct sum_of_weights;
@@ -260,6 +272,24 @@ namespace impl
 
     template<typename Sample, typename Impl>
     struct p_square_quantile_impl;
+
+    template<typename Sample>
+    struct first_quartile_impl;
+
+    template<typename Sample>
+    struct third_quartile_impl;
+
+    template<typename Sample>
+    struct with_density_first_quartile_impl;
+
+    template<typename Sample>
+    struct with_density_third_quartile_impl;
+
+    template<typename Sample>
+    struct with_p_square_cumulative_distribution_first_quartile_impl;
+
+    template<typename Sample>
+    struct with_p_square_cumulative_distribution_third_quartile_impl;
 
     template<typename Sample>
     struct skewness_impl;
@@ -423,6 +453,8 @@ struct quadratic {};
 // modifiers for p_square_quantile
 struct regular {};
 struct for_median {};
+struct for_first_quartile {};
+struct for_third_quartile {};
 
 // modifier for sum_kahan, sum_of_weights_kahan, sum_of_variates_kahan, weighted_sum_kahan
 struct kahan {};

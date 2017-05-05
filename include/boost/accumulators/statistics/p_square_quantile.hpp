@@ -61,7 +61,10 @@ namespace impl
 
         template<typename Args>
         p_square_quantile_impl(Args const &args)
-          : p(is_same<Impl, for_median>::value ? 0.5 : args[quantile_probability | 0.5])
+          : p(is_same<Impl, for_median>::value ? 0.5
+                  : is_same<Impl, for_first_quartile>::value ? 0.25
+                  : is_same<Impl, for_third_quartile>::value ? 0.75
+                  : args[quantile_probability | 0.5])
           , heights()
           , actual_positions()
           , desired_positions()
@@ -220,6 +223,20 @@ namespace tag
         ///
         typedef accumulators::impl::p_square_quantile_impl<mpl::_1, for_median> impl;
     };
+    struct p_square_quantile_for_first_quartile
+      : depends_on<count>
+    {
+        /// INTERNAL ONLY
+        ///
+        typedef accumulators::impl::p_square_quantile_impl<mpl::_1, for_first_quartile> impl;
+    };
+    struct p_square_quantile_for_third_quartile
+      : depends_on<count>
+    {
+        /// INTERNAL ONLY
+        ///
+        typedef accumulators::impl::p_square_quantile_impl<mpl::_1, for_third_quartile> impl;
+    };
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -230,13 +247,19 @@ namespace extract
 {
     extractor<tag::p_square_quantile> const p_square_quantile = {};
     extractor<tag::p_square_quantile_for_median> const p_square_quantile_for_median = {};
+    extractor<tag::p_square_quantile_for_first_quartile> const p_square_quantile_for_first_quartile = {};
+    extractor<tag::p_square_quantile_for_third_quartile> const p_square_quantile_for_third_quartile = {};
 
     BOOST_ACCUMULATORS_IGNORE_GLOBAL(p_square_quantile)
     BOOST_ACCUMULATORS_IGNORE_GLOBAL(p_square_quantile_for_median)
+    BOOST_ACCUMULATORS_IGNORE_GLOBAL(p_square_quantile_for_first_quartile)
+    BOOST_ACCUMULATORS_IGNORE_GLOBAL(p_square_quantile_for_third_quartile)
 }
 
 using extract::p_square_quantile;
 using extract::p_square_quantile_for_median;
+using extract::p_square_quantile_for_first_quartile;
+using extract::p_square_quantile_for_third_quartile;
 
 // So that p_square_quantile can be automatically substituted with
 // weighted_p_square_quantile when the weight parameter is non-void

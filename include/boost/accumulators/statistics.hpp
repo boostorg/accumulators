@@ -27,6 +27,7 @@
 #include <boost/accumulators/statistics/pot_quantile.hpp>
 #include <boost/accumulators/statistics/p_square_cumul_dist.hpp>
 #include <boost/accumulators/statistics/p_square_quantile.hpp>
+#include <boost/accumulators/statistics/quartile.hpp>
 #include <boost/accumulators/statistics/skewness.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/sum.hpp>
@@ -47,6 +48,7 @@
 #include <boost/accumulators/statistics/weighted_peaks_over_threshold.hpp>
 #include <boost/accumulators/statistics/weighted_p_square_cumul_dist.hpp>
 #include <boost/accumulators/statistics/weighted_p_square_quantile.hpp>
+#include <boost/accumulators/statistics/weighted_quartile.hpp>
 #include <boost/accumulators/statistics/weighted_skewness.hpp>
 #include <boost/accumulators/statistics/weighted_sum.hpp>
 #include <boost/accumulators/statistics/weighted_sum_kahan.hpp>

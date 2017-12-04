@@ -113,7 +113,7 @@ namespace impl
                     std::ostringstream msg;
                     msg << "probability = " << this->probability << " is not in valid range (";
                     msg << *this->probabilities.begin() << ", " << *(this->probabilities.end() - 1) << ")";
-                    boost::throw_exception(std::runtime_error(msg.str()));
+                    boost::throw_exception(std::logic_error(msg.str()));
                     return Sample(0);
                 }
 

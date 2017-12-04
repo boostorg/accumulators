@@ -154,7 +154,7 @@ namespace impl
                 {
                     std::ostringstream msg;
                     msg << "index n = " << n << " is not in valid range [0, " << tail(args).size() << ")";
-                    boost::throw_exception(std::runtime_error(msg.str()));
+                    boost::throw_exception(std::logic_error(msg.str()));
                     return Sample(0);
                 }
             }

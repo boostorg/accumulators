@@ -83,6 +83,8 @@ namespace impl
             return result_type(this->buffer_.begin(), this->buffer_.end());
         }
 
+        // TODO need serialization of circular buffer
+
     private:
         circular_buffer<Sample> buffer_;
     };

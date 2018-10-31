@@ -86,6 +86,25 @@ namespace detail
     {
     };
 
+    // function object that serialize an accumulator
+    template<typename Archive>
+    struct serialize_accumulator
+    {
+        serialize_accumulator(Archive & _ar, const unsigned int _file_version) :
+            ar(_ar), file_version(_file_version)
+        {}
+
+        template<typename Accumulator>
+        void operator ()(Accumulator &accumulator)
+        {
+            accumulator.serialize(ar, file_version);
+        }
+
+    private:
+        Archive& ar;
+        const unsigned int file_version;
+    };
+
 } // namespace detail
 
 #ifdef _MSC_VER
@@ -336,6 +355,14 @@ struct accumulator_set
         this->template visit_if<detail::contains_feature_of_<dependencies> >(
             detail::make_drop_visitor(detail::accumulator_params()(*this))
         );
+    }
+
+    // make the accumulator set serializeable
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int file_version)
+    {
+        detail::serialize_accumulator<Archive> serializer(ar, file_version);
+        fusion::for_each(this->accumulators, serializer);
     }
 
 private:

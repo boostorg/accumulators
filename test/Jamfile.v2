@@ -24,6 +24,8 @@ project
       # MSVC's iterator debugging causes some tests to run forever.
       <toolset>msvc:<iterator_debugging>off
       <toolset>intel-win:<iterator_debugging>off
+      <cxxflags>"-Wno-deprecated-declarations"
+      <library>/boost/serialization
     ;
 
 test-suite "accumulators"

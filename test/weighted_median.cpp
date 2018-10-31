@@ -38,7 +38,7 @@ void test_stat()
         acc_cdist( p_square_cumulative_distribution_num_cells = 100 );
 
 
-    for (std::size_t i=0; i<100000; ++i)
+    for (std::size_t i=0; i<1000000; ++i)
     {
         double sample = normal_narrow();
         acc(sample, weight = std::exp(0.5 * (sample - mu) * (sample - mu) * ( 1./sigma_narrow/sigma_narrow - 1./sigma/sigma )));

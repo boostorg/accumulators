@@ -54,6 +54,34 @@ test_rolling_mean_test_impl(accumulator_set_type& acc)
     assert_is_double(rolling_mean(acc));
 }
 
+template<typename accumulator_set_type>
+void
+test_rolling_mean_unsigned_test_impl(accumulator_set_type& acc)
+{
+    acc(7U);
+    BOOST_CHECK_CLOSE(7., rolling_mean(acc), 1e-5);
+
+    acc(6U);
+    BOOST_CHECK_CLOSE(6.5, rolling_mean(acc), 1e-5);
+
+    acc(5U);
+    BOOST_CHECK_CLOSE(6., rolling_mean(acc), 1e-5);
+
+    acc(4U);
+    BOOST_CHECK_CLOSE(5.5, rolling_mean(acc), 1e-5);
+
+    acc(3U);
+    BOOST_CHECK_CLOSE(5., rolling_mean(acc), 1e-5);
+
+    acc(2U);
+    BOOST_CHECK_CLOSE(4., rolling_mean(acc), 1e-5);
+
+    acc(1U);
+    BOOST_CHECK_CLOSE(3., rolling_mean(acc), 1e-5);
+
+    assert_is_double(rolling_mean(acc));
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // test_rolling_mean
 void test_rolling_mean()
@@ -97,6 +125,14 @@ void test_rolling_mean()
     BOOST_CHECK  (sizeof(acc_lazy_rolling_mean) == sizeof(acc_lazy_rolling_mean3));
     BOOST_CHECK  (sizeof(acc_immediate_rolling_mean) == sizeof(acc_immediate_rolling_mean2));
     BOOST_CHECK  (sizeof(acc_immediate_rolling_mean) == sizeof(acc_immediate_rolling_mean3));
+
+    //// test unsigned int with both implementations
+    accumulator_set<unsigned int,stats<tag::immediate_rolling_mean> >
+    acc_immediate_rolling_mean4(tag::immediate_rolling_mean::window_size = window_size),
+    acc_immediate_rolling_mean5(tag::immediate_rolling_mean::window_size = window_size, sample = 0);
+
+    test_rolling_mean_unsigned_test_impl(acc_immediate_rolling_mean4);
+    test_rolling_mean_unsigned_test_impl(acc_immediate_rolling_mean5);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

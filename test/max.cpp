@@ -51,7 +51,6 @@ void test_persistency()
     boost::archive::text_iarchive ia(ss);
     acc.serialize(ia, 0);
     BOOST_CHECK_EQUAL(2u, max(acc));
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////

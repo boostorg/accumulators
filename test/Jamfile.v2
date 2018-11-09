@@ -50,6 +50,8 @@ test-suite "accumulators"
       [ run rolling_count.cpp ]
       [ run rolling_sum.cpp ]
       [ run rolling_mean.cpp ]
+      [ run rolling_variance.cpp ]
+      [ run rolling_moment.cpp ]
       [ run skewness.cpp ]
       [ run sum.cpp ]
       [ run sum_kahan.cpp ]

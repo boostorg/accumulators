@@ -41,7 +41,7 @@
 #endif
 
 #ifdef BOOST_ACCUMULATORS_BROKEN_CONST_OVERLOADS
-# include <boost/utility/enable_if.hpp>
+# include <boost/core/enable_if.hpp>
 # include <boost/type_traits/is_const.hpp>
 # define BOOST_ACCUMULATORS_PROTO_DISABLE_IF_IS_CONST(T)\
     , typename boost::disable_if<boost::is_const<T> >::type * = 0
@@ -202,29 +202,7 @@ namespace detail
 
 }} // namespace boost::accumulators
 
-// For defining boost::parameter keywords that can be inherited from to
-// get a nested, class-scoped keyword with the requested alias
-#define BOOST_PARAMETER_NESTED_KEYWORD(tag_namespace, name, alias)                                  \
-    namespace tag_namespace                                                                         \
-    {                                                                                               \
-        template<int Dummy = 0>                                                                     \
-        struct name ## _                                                                            \
-        {                                                                                           \
-            static char const* keyword_name()                                                       \
-            {                                                                                       \
-                return #name;                                                                       \
-            }                                                                                       \
-            static ::boost::parameter::keyword<name ## _<Dummy> > &alias;                           \
-        };                                                                                          \
-        template<int Dummy>                                                                         \
-        ::boost::parameter::keyword<name ## _<Dummy> > &name ## _<Dummy>::alias =                   \
-        ::boost::parameter::keyword<name ## _<Dummy> >::get();                                      \
-        typedef name ## _ <> name;                                                                  \
-    }                                                                                               \
-    namespace                                                                                       \
-    {                                                                                               \
-        ::boost::parameter::keyword<tag_namespace::name> &name =                                    \
-        ::boost::parameter::keyword<tag_namespace::name>::get();                                    \
-    }
+#include <boost/parameter/nested_keyword.hpp>
 
-#endif
+#endif  // include guard
+

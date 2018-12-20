@@ -49,6 +49,7 @@ test-suite "accumulators"
       [ run rolling_sum.cpp ]
       [ run rolling_mean.cpp ]
       [ run skewness.cpp ]
+      [ run sorted_rolling_window.cpp ]
       [ run sum.cpp ]
       [ run sum_kahan.cpp ]
       [ run tail.cpp ]

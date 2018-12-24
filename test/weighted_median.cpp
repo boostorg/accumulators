@@ -38,7 +38,7 @@ void test_stat()
         acc_cdist( p_square_cumulative_distribution_num_cells = 100 );
 
 
-    for (std::size_t i=0; i<100000; ++i)
+    for (std::size_t i=0; i<1000000; ++i)
     {
         double sample = normal_narrow();
         double w = std::exp(
@@ -52,10 +52,8 @@ void test_stat()
     }
 
     BOOST_CHECK_CLOSE(1., weighted_median(acc), 2);
-#if 0
     BOOST_CHECK_CLOSE(1., weighted_median(acc_dens), 3);
     BOOST_CHECK_CLOSE(1., weighted_median(acc_cdist), 3);
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////

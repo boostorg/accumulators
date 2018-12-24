@@ -38,7 +38,7 @@ alias accumulators_regular_tests
       [ run median.cpp ]
       [ run min.cpp ]
       [ run moment.cpp ]
-#      [ run p_square_cumul_dist.cpp ]
+      [ run p_square_cumul_dist.cpp ]
       [ run reference.cpp ]
       [ run rolling_count.cpp ]
       [ run rolling_sum.cpp ]

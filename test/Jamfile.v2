@@ -38,7 +38,6 @@ alias accumulators_regular_tests
       [ run median.cpp ]
       [ run min.cpp ]
       [ run moment.cpp ]
-      [ run p_square_cumul_dist.cpp ]
       [ run reference.cpp ]
       [ run rolling_count.cpp ]
       [ run rolling_sum.cpp ]
@@ -114,6 +113,24 @@ alias accumulators_test_valarray
 
 alias accumulators_test_valarray
     : [ run valarray.cpp ]
+    ;
+
+alias accumulators_test_p_square_cumul_dist
+    :
+    : <target-os>linux
+      <toolset>clang
+      <cxxstd>14
+    ;
+
+alias accumulators_test_p_square_cumul_dist
+    :
+    : <target-os>linux
+      <toolset>clang
+      <cxxstd>1z
+    ;
+
+alias accumulators_test_p_square_cumul_dist
+      [ run p_square_cumul_dist.cpp ]
     ;
 
 alias accumulators_test_tail_variate_means
@@ -203,6 +220,7 @@ test-suite "accumulators"
     : accumulators_regular_tests
       accumulators_tests_with_gets
       accumulators_test_valarray
+      accumulators_test_p_square_cumul_dist
       accumulators_test_tail_variate_means
       accumulators_tests_pot_quantile_and_weighted_tail
       accumulators_test_weighted_tail_variate_means

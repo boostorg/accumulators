@@ -14,13 +14,14 @@ using namespace unit_test;
 using namespace accumulators;
 using namespace container;
 
-///////////////////////////////////////////////////////////////////////////////
-// test_stat
-//
-void test_stat()
-{
-    accumulator_set<int, stats<tag::rolling_max> > acc(tag::rolling_window::window_size = 3);
+size_t window_size = 3;
 
+///////////////////////////////////////////////////////////////////////////////
+// test_impl
+//
+template<typename Accumulator>
+void test_impl(Accumulator& acc)
+{
     BOOST_CHECK_EQUAL(numeric::as_min(int()), rolling_max(acc));
 
     acc(1);
@@ -48,6 +49,24 @@ void test_stat()
     BOOST_CHECK_EQUAL(3, rolling_max(acc));
 }
 
+void test_rolling_max()
+{
+    accumulator_set<int, stats<tag::rolling_max> > acc_default(tag::rolling_window::window_size = window_size);
+    test_impl(acc_default);
+
+    accumulator_set<int, stats<tag::rolling_max(lazy)> > acc_lazy(tag::rolling_window::window_size = window_size);
+    test_impl(acc_lazy);
+
+    accumulator_set<int, stats<tag::lazy_rolling_max> > acc_lazy2(tag::rolling_window::window_size = window_size);
+    test_impl(acc_lazy2);
+
+    accumulator_set<int, stats<tag::rolling_max(immediate)> > acc_immediate(tag::rolling_window::window_size = window_size);
+    test_impl(acc_immediate);
+
+    accumulator_set<int, stats<tag::immediate_rolling_max> > acc_immediate2(tag::rolling_window::window_size = window_size);
+    test_impl(acc_immediate2);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // init_unit_test_suite
 //
@@ -55,7 +74,7 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 {
     test_suite *test = BOOST_TEST_SUITE("rolling max test");
 
-    test->add(BOOST_TEST_CASE(&test_stat));
+    test->add(BOOST_TEST_CASE(&test_rolling_max));
 
     return test;
 }

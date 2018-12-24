@@ -2079,17 +2079,21 @@ The rolling count is the current number of elements in the rolling window.
 
 [section:rolling_max rolling_max]
 
-The rolling sum is the sum of the last /N/ samples.
+The rolling max is the max of the last /N/ samples.
 
 [variablelist
     [[Result Type] [``_sample_type_``]]
-    [[Depends On] [`sorted_rolling_window`]]
-    [[Variants] [['none]]]
+    [[Depends On] [`lazy_rolling_max` depends on `rolling_window` \n
+                   `immediate_rolling_max` depends on `sorted_rolling_window`]]
+    [[Variants] [`lazy_rolling_max` (a.k.a. `rolling_max(lazy)`) \n
+                 `immediate_rolling_max` (a.k.a. `rolling_max(immediate)`)]]
     [[Initialization Parameters] [`tag::rolling_window::window_size`]]
     [[Accumulator Parameters] [['none]]]
     [[Extractor Parameters] [['none]]]
-    [[Accumulator Complexity] [O(log N), where N is the window size]]
-    [[Extractor Complexity] [O(1)]]
+    [[Accumulator Complexity] [`lazy_rolling_max` is O(1) \n
+                               `immediate_rolling_max` is O(log N), where N is the window size]]
+    [[Extractor Complexity] [`lazy_rolling_max` is O(N), where N is the window size \n
+                             `immediate_rolling_max` is O(1)]]
 ]
 
 [*Header]
@@ -2121,23 +2125,28 @@ The rolling sum is the sum of the last /N/ samples.
 
 [*See also]
 
-* [classref boost::accumulators::impl::rolling_max_impl [^rolling_max_impl]]
+* [classref boost::accumulators::impl::lazy_rolling_max_impl [^lazy_rolling_max_impl]]
+* [classref boost::accumulators::impl::immediate_rolling_max_impl [^immediate_rolling_max_impl]]
 
 [endsect]
 
 [section:rolling_min rolling_min]
 
-The rolling sum is the sum of the last /N/ samples.
+The rolling min is the min of the last /N/ samples.
 
 [variablelist
     [[Result Type] [``_sample_type_``]]
-    [[Depends On] [`sorted_rolling_window`]]
-    [[Variants] [['none]]]
+    [[Depends On] [`lazy_rolling_min` depends on `rolling_window` \n
+                   `immediate_rolling_min` depends on `sorted_rolling_window`]]
+    [[Variants] [`lazy_rolling_min` (a.k.a. `rolling_min(lazy)`) \n
+                 `immediate_rolling_min` (a.k.a. `rolling_min(immediate)`)]]
     [[Initialization Parameters] [`tag::rolling_window::window_size`]]
     [[Accumulator Parameters] [['none]]]
     [[Extractor Parameters] [['none]]]
-    [[Accumulator Complexity] [O(log N), where N is the window size]]
-    [[Extractor Complexity] [O(1)]]
+    [[Accumulator Complexity] [`lazy_rolling_min` is O(1) \n
+                               `immediate_rolling_min` is O(log N), where N is the window size]]
+    [[Extractor Complexity] [`lazy_rolling_min` is O(N), where N is the window size \n
+                             `immediate_rolling_min` is O(1)]]
 ]
 
 [*Header]
@@ -2166,7 +2175,8 @@ The rolling sum is the sum of the last /N/ samples.
 
 [*See also]
 
-* [classref boost::accumulators::impl::rolling_min_impl [^rolling_min_impl]]
+* [classref boost::accumulators::impl::lazy_rolling_min_impl [^lazy_rolling_min_impl]]
+* [classref boost::accumulators::impl::immediate_rolling_min_impl [^immediate_rolling_min_impl]]
 
 [endsect]
 

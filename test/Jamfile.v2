@@ -130,7 +130,7 @@ alias accumulators_test_p_square_cumul_dist
     ;
 
 alias accumulators_test_p_square_cumul_dist
-      [ run p_square_cumul_dist.cpp ]
+    : [ run p_square_cumul_dist.cpp ]
     ;
 
 alias accumulators_test_tail_variate_means

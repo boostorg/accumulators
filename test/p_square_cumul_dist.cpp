@@ -51,7 +51,7 @@ void test_stat()
     boost::normal_distribution<> mean_sigma(0,1);
     boost::variate_generator<boost::lagged_fibonacci607&, boost::normal_distribution<> > normal(rng, mean_sigma);
 
-    for (std::size_t i=0; i<100000; ++i)
+    for (std::size_t i=0; i<1000000; ++i)
     {
         acc(normal());
     }

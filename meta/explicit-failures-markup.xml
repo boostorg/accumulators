@@ -40,11 +40,5 @@
         <toolset name="acc"/>
         <note author="Boris Gubenko" refid="47"/>
       </mark-expected-failures>
-      <mark-expected-failures>
-        <test name="p_square_cumul_dist"/>
-        <test name="weighted_p_square_cumul_dist"/>
-        <toolset name="*"/>
-        <note author="Eric Niebler" refid="53"/>
-      </mark-expected-failures>
     </library>
 </explicit-failures-markup>

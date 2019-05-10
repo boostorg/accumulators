@@ -11,6 +11,9 @@
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/rolling_mean.hpp>
+#include <sstream>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 using namespace boost;
 using namespace unit_test;
@@ -83,6 +86,39 @@ test_rolling_mean_unsigned_test_impl(accumulator_set_type& acc)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// test_persistency_impl
+//
+template<typename accumulator_set_type>
+void test_persistency_impl(accumulator_set_type& acc)
+{
+    std::stringstream ss;
+    {
+        acc(1);
+        acc(2);
+        acc(3);
+        acc(4);
+        acc(5);
+        acc(6);
+        acc(7);
+        BOOST_CHECK_CLOSE(5., rolling_mean(acc), 1e-5);
+        boost::archive::text_oarchive oa(ss);
+        acc.serialize(oa, 0);
+    }
+    // initialize from acc to make sure all values are passed
+    accumulator_set_type other_acc = acc;
+    // accumulate more, to make sure that deserialization set the right value
+    // and not the copy ctor
+    other_acc(100);
+    other_acc(100);
+    other_acc(100);
+    other_acc(100);
+    other_acc(100);
+    boost::archive::text_iarchive ia(ss);
+    other_acc.serialize(ia, 0);
+    BOOST_CHECK_CLOSE(5., rolling_mean(other_acc), 1e-5);
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // test_rolling_mean
 void test_rolling_mean()
 {
@@ -136,6 +172,40 @@ void test_rolling_mean()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// test_persistency
+void test_persistency()
+{
+    accumulator_set<int,stats<tag::immediate_rolling_mean> >
+        acc_immediate_rolling_mean(tag::immediate_rolling_mean::window_size = window_size),
+        acc_immediate_rolling_mean2(tag::immediate_rolling_mean::window_size = window_size, sample = 0);
+
+    accumulator_set<int,stats<tag::rolling_mean(immediate)> >
+       acc_immediate_rolling_mean3(tag::immediate_rolling_mean::window_size = window_size);
+
+    accumulator_set<int,stats<tag::lazy_rolling_mean> >
+        acc_lazy_rolling_mean(tag::lazy_rolling_mean::window_size = window_size),
+        acc_lazy_rolling_mean2(tag::lazy_rolling_mean::window_size = window_size, sample = 0);
+
+    accumulator_set<int,stats<tag::rolling_mean(lazy)> >
+       acc_lazy_rolling_mean3(tag::lazy_rolling_mean::window_size = window_size);
+
+    accumulator_set<int,stats<tag::rolling_mean> >
+        acc_default_rolling_mean(tag::rolling_mean::window_size = window_size),
+        acc_default_rolling_mean2(tag::rolling_mean::window_size = window_size, sample = 0);
+
+    //// test the different implementations
+    test_persistency_impl(acc_lazy_rolling_mean);
+    test_persistency_impl(acc_default_rolling_mean);
+    test_persistency_impl(acc_immediate_rolling_mean);
+
+    test_persistency_impl(acc_lazy_rolling_mean2);
+    test_persistency_impl(acc_default_rolling_mean2);
+    test_persistency_impl(acc_immediate_rolling_mean2);
+
+    test_persistency_impl(acc_lazy_rolling_mean3);
+    test_persistency_impl(acc_immediate_rolling_mean3);
+}
+///////////////////////////////////////////////////////////////////////////////
 // init_unit_test_suite
 //
 test_suite* init_unit_test_suite( int argc, char* argv[] )
@@ -143,6 +213,7 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
     test_suite *test = BOOST_TEST_SUITE("rolling mean test");
 
     test->add(BOOST_TEST_CASE(&test_rolling_mean));
+    test->add(BOOST_TEST_CASE(&test_persistency));
 
     return test;
 }

@@ -43,6 +43,10 @@ namespace boost { namespace accumulators
          {
             return numeric::fdiv(rolling_sum(args), rolling_count(args));
          }
+        
+         // serialization is done by accumulators it depends on
+         template<class Archive>
+         void serialize(Archive & ar, const unsigned int file_version) {}
       };
 
       ///////////////////////////////////////////////////////////////////////////////
@@ -86,6 +90,13 @@ namespace boost { namespace accumulators
          result_type result(Args const &) const
          {
             return mean_;
+         }
+        
+         // make this accumulator serializeable
+         template<class Archive>
+         void serialize(Archive & ar, const unsigned int file_version)
+         { 
+            ar & mean_;
          }
 
       private:

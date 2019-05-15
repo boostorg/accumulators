@@ -22,6 +22,7 @@
 #include <boost/accumulators/statistics_fwd.hpp>
 #include <boost/accumulators/statistics/count.hpp>
 #include <boost/accumulators/statistics/parameters/quantile_probability.hpp>
+#include <boost/serialization/boost_array.hpp>
 
 namespace boost { namespace accumulators
 {
@@ -190,6 +191,18 @@ namespace impl
         result_type result(dont_care) const
         {
             return this->heights[2];
+        }
+
+        // make this accumulator serializeable
+        // TODO: do we need to split to load/save and verify that P did not change?
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int file_version)
+        { 
+            ar & p;
+            ar & heights;
+            ar & actual_positions;
+            ar & desired_positions;
+            ar & positions_increments;
         }
 
     private:

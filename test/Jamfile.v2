@@ -17,15 +17,14 @@ feature.compose <iterator_debugging>off
 
 project
     : requirements
+      <library>/boost/serialization
       <library>/boost/test//boost_unit_test_framework
-      <link>static
-      <include>../../..
       <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
       # MSVC's iterator debugging causes some tests to run forever.
       <toolset>msvc:<iterator_debugging>off
       <toolset>intel-win:<iterator_debugging>off
-      <cxxflags>"-Wno-deprecated-declarations"
-      <library>/boost/serialization
+      # MSVC's cl throws command line error D8021 : invalid numeric argument
+#      <cxxflags>"-Wno-deprecated-declarations"
     ;
 
 alias accumulators_regular_tests
@@ -49,8 +48,6 @@ alias accumulators_regular_tests
       [ run rolling_count.cpp ]
       [ run rolling_sum.cpp ]
       [ run rolling_mean.cpp ]
-      [ run rolling_variance.cpp ]
-      [ run rolling_moment.cpp ]
       [ run skewness.cpp ]
       [ run sum.cpp ]
       [ run sum_kahan.cpp ]
@@ -71,6 +68,7 @@ alias accumulators_regular_tests
       [ run weighted_sum.cpp ]
       [ run weighted_sum_kahan.cpp ]
       [ run weighted_variance.cpp ]
+    : <link>static
     ;
 
 alias accumulators_test_valarray
@@ -86,7 +84,7 @@ alias accumulators_test_valarray
     ;
 
 alias accumulators_test_valarray
-    : [ run valarray.cpp ]
+    : [ run valarray.cpp : : : <link>static ]
     ;
 
 alias accumulators_test_tail_variate_means
@@ -96,21 +94,23 @@ alias accumulators_test_tail_variate_means
     ;
 
 alias accumulators_test_tail_variate_means
-    : [ run tail_variate_means.cpp ]
+    : [ run tail_variate_means.cpp : : : <link>static ]
     ;
 
-alias accumulators_tests_pot_quantile_and_weighted_tail
+alias accumulators_tests_that_fail_with_gcc4_4
     :
     : <target-os>linux
       <toolset>gcc
       <toolset-gcc:version>4.4.7
     ;
 
-alias accumulators_tests_pot_quantile_and_weighted_tail
-    : [ run pot_quantile.cpp ]
-      [ run weighted_pot_quantile.cpp ]
-      [ run weighted_tail_mean.cpp ]
-      [ run weighted_tail_quantile.cpp ]
+alias accumulators_tests_that_fail_with_gcc4_4
+    : [ run pot_quantile.cpp : : : <link>static ]
+      [ run rolling_moment.cpp : : : <link>static ]
+      [ run rolling_variance.cpp : : : <link>static ]
+      [ run weighted_pot_quantile.cpp : : : <link>static ]
+      [ run weighted_tail_mean.cpp : : : <link>static ]
+      [ run weighted_tail_quantile.cpp : : : <link>static ]
     ;
 
 alias accumulators_test_weighted_tail_variate_means
@@ -127,13 +127,13 @@ alias accumulators_test_weighted_tail_variate_means
     ;
 
 alias accumulators_test_weighted_tail_variate_means
-    : [ run weighted_tail_variate_means.cpp ]
+    : [ run weighted_tail_variate_means.cpp : : : <link>static ]
     ;
 
 test-suite "accumulators"
     : accumulators_regular_tests
       accumulators_test_valarray
       accumulators_test_tail_variate_means
-      accumulators_tests_pot_quantile_and_weighted_tail
+      accumulators_tests_that_fail_with_gcc4_4
       accumulators_test_weighted_tail_variate_means
     ;

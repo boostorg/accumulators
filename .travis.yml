@@ -3,6 +3,7 @@
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://boost.org/LICENSE_1_0.txt)
 
+dist: xenial
 language: cpp
 
 python: "2.7"
@@ -190,7 +191,7 @@ matrix:
             - clang-4.0
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-4.0
+            - llvm-toolchain-xenial-4.0
 
     - os: linux
       compiler: clang++-5.0
@@ -201,36 +202,49 @@ matrix:
             - clang-5.0
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
+            - llvm-toolchain-xenial-5.0
 
     - os: linux
       compiler: clang++-6.0
-      env: TOOLSET=clang COMPILER=clang++-6.0 CXXSTD=03,11,14,1z
+      env: TOOLSET=clang COMPILER=clang++-6.0 CXXSTD=03,11,14,1z,2a
       addons:
         apt:
           packages:
             - clang-6.0
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-6.0
-
-    - os: linux
-      compiler: clang++
-      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - libstdc++-5-dev
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: clang++-libc++
-      env: TOOLSET=clang COMPILER=clang++-libc++ CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
+            - libc6-dbg
             - libc++-dev
+            - libstdc++-8-dev
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-6.0
+
+    - os: linux
+      compiler: clang++-7
+      env: TOOLSET=clang COMPILER=clang++-7 CXXSTD=14,1z,2a
+      addons:
+        apt:
+          packages:
+            - clang-7
+            - libc6-dbg
+            - libc++-dev
+            - libstdc++-8-dev
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-7
+
+    - os: linux
+      compiler: clang++-8
+      env: TOOLSET=clang COMPILER=clang++-8 CXXSTD=14,1z,2a
+      addons:
+        apt:
+          packages:
+            - clang-8
+            - libc6-dbg
+            - libc++-dev
+            - libstdc++-8-dev
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-8
 
     - os: osx
       env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z

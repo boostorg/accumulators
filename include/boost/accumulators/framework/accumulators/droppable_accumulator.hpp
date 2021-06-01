@@ -49,7 +49,7 @@ namespace boost { namespace accumulators
             }
 
         private:
-            add_ref_visitor &operator =(add_ref_visitor const &);
+            BOOST_DELETED_FUNCTION(add_ref_visitor &operator =(add_ref_visitor const &))
             Args const &args_;
         };
 
@@ -87,7 +87,7 @@ namespace boost { namespace accumulators
             }
 
         private:
-            drop_visitor &operator =(drop_visitor const &);
+            BOOST_DELETED_FUNCTION(drop_visitor &operator =(drop_visitor const &))
             Args const &args_;
         };
 
@@ -227,7 +227,7 @@ namespace boost { namespace accumulators
         }
 
     private:
-        with_cached_result &operator =(with_cached_result const &);
+        BOOST_DELETED_FUNCTION(with_cached_result &operator =(with_cached_result const &))
 
         void set(result_type const &r)
         {

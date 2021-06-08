@@ -11,6 +11,8 @@
 #include <cmath>
 #include <functional>
 #include <boost/array.hpp>
+#include <sstream>
+#include <boost/throw_exception.hpp>
 #include <boost/parameter/keyword.hpp>
 #include <boost/mpl/placeholders.hpp>
 #include <boost/type_traits/is_same.hpp>
@@ -67,6 +69,12 @@ namespace impl {
           , actual_positions()
           , desired_positions()
         {
+            if (this->p < 0 || this->p > 1)
+            {
+                std::ostringstream msg;
+                msg << "quantile_probability = " << this->p << " is not in valid range [0, 1]";
+                boost::throw_exception(std::logic_error(msg.str()));
+            }
         }
 
         template<typename Args>

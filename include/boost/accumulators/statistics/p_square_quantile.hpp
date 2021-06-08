@@ -10,6 +10,8 @@
 
 #include <cmath>
 #include <functional>
+#include <sstream>
+#include <boost/throw_exception.hpp>
 #include <boost/array.hpp>
 #include <boost/mpl/placeholders.hpp>
 #include <boost/type_traits/is_same.hpp>
@@ -68,6 +70,13 @@ namespace impl
           , desired_positions()
           , positions_increments()
         {
+            if (this->p < 0 || this->p > 1)
+            {
+                std::ostringstream msg;
+                msg << "quantile_probability = " << this->p << " is not in valid range [0, 1]";
+                boost::throw_exception(std::logic_error(msg.str()));
+            }
+
             for(std::size_t i = 0; i < 5; ++i)
             {
                 this->actual_positions[i] = i + float_type(1.);

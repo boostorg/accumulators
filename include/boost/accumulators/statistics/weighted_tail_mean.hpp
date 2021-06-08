@@ -91,6 +91,13 @@ namespace impl
         template<typename Args>
         result_type result(Args const &args) const
         {
+            if (args[quantile_probability] < 0 || args[quantile_probability] > 1)
+            {
+                std::ostringstream msg;
+                msg << "quantile_probability = " << args[quantile_probability] << " is not in valid range [0, 1]";
+                boost::throw_exception(std::logic_error(msg.str()));
+            }
+
             float_type threshold = sum_of_weights(args)
                              * ( ( is_same<LeftRight, left>::value ) ? args[quantile_probability] : 1. - args[quantile_probability] );
 

@@ -10,6 +10,8 @@
 
 #include <vector>
 #include <functional>
+#include <sstream>
+#include <boost/throw_exception.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/iterator_range.hpp>
@@ -90,6 +92,15 @@ namespace impl
           , actual_positions(heights.size())
           , desired_positions(heights.size())
         {
+            BOOST_FOREACH(float_type p, this->probabilities)
+            {
+                if (p < 0 || p > 1)
+                {
+                    std::ostringstream msg;
+                    msg << "extended_p_square_probabilities = " << p << " is not valid range [0, 1]";
+                    boost::throw_exception(std::logic_error(msg.str()));
+                }
+            }
         }
 
         template<typename Args>

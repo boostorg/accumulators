@@ -12,6 +12,8 @@
 #include <limits>
 #include <numeric>
 #include <functional>
+#include <sstream>
+#include <boost/throw_exception.hpp>
 #include <boost/range.hpp>
 #include <boost/parameter/keyword.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -64,6 +66,13 @@ namespace impl
         template<typename Args>
         result_type result(Args const &args) const
         {
+            if (args[quantile_probability] < 0 || args[quantile_probability] > 1)
+            {
+                std::ostringstream msg;
+                msg << "quantile_probability = " << args[quantile_probability] << " is not in valid range [0, 1]";
+                boost::throw_exception(std::logic_error(msg.str()));
+            }
+
             typedef
                 typename mpl::if_<
                     is_same<Impl, weighted>

@@ -138,6 +138,43 @@ namespace impl
         return find_accumulator<tag::rolling_window_plus1>(args[accumulator]).full();
     }
 
+} // namespace impl
+
+///////////////////////////////////////////////////////////////////////////////
+// tag::rolling_window_plus1
+//
+namespace tag
+{
+    struct rolling_window_plus1
+      : depends_on<>
+      , tag::rolling_window_size
+    {
+        /// INTERNAL ONLY
+        ///
+        typedef accumulators::impl::rolling_window_plus1_impl< mpl::_1 > impl;
+
+        #ifdef BOOST_ACCUMULATORS_DOXYGEN_INVOKED
+        /// tag::rolling_window::size named parameter
+        static boost::parameter::keyword<tag::rolling_window_size> const window_size;
+        #endif
+    };
+
+} // namespace tag
+
+///////////////////////////////////////////////////////////////////////////////
+// extract::rolling_window_plus1
+//
+namespace extract
+{
+    extractor<tag::rolling_window_plus1> const rolling_window_plus1 = {};
+
+    BOOST_ACCUMULATORS_IGNORE_GLOBAL(rolling_window_plus1)
+}
+
+using extract::rolling_window_plus1;
+
+namespace impl
+{
     ///////////////////////////////////////////////////////////////////////////////
     // rolling_window_impl
     //    stores the latest N samples, where N is specified at construction type
@@ -166,25 +203,10 @@ namespace impl
 } // namespace impl
 
 ///////////////////////////////////////////////////////////////////////////////
-// tag::rolling_window_plus1
 // tag::rolling_window
 //
 namespace tag
 {
-    struct rolling_window_plus1
-      : depends_on<>
-      , tag::rolling_window_size
-    {
-        /// INTERNAL ONLY
-        ///
-        typedef accumulators::impl::rolling_window_plus1_impl< mpl::_1 > impl;
-
-        #ifdef BOOST_ACCUMULATORS_DOXYGEN_INVOKED
-        /// tag::rolling_window::size named parameter
-        static boost::parameter::keyword<tag::rolling_window_size> const window_size;
-        #endif
-    };
-
     struct rolling_window
       : depends_on< rolling_window_plus1 >
     {
@@ -201,19 +223,15 @@ namespace tag
 } // namespace tag
 
 ///////////////////////////////////////////////////////////////////////////////
-// extract::rolling_window_plus1
 // extract::rolling_window
 //
 namespace extract
 {
-    extractor<tag::rolling_window_plus1> const rolling_window_plus1 = {};
     extractor<tag::rolling_window> const rolling_window = {};
 
-    BOOST_ACCUMULATORS_IGNORE_GLOBAL(rolling_window_plus1)
     BOOST_ACCUMULATORS_IGNORE_GLOBAL(rolling_window)
 }
 
-using extract::rolling_window_plus1;
 using extract::rolling_window;
 
 }} // namespace boost::accumulators

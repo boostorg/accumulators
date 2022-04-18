@@ -16,9 +16,10 @@ feature.compose <iterator_debugging>off
   ;
 
 project
+    : default-build
+      <link>static
     : requirements
       <library>/boost/test//boost_unit_test_framework
-      <link>static
       <include>../../..
       <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
       # MSVC's iterator debugging causes some tests to run forever.

@@ -61,7 +61,7 @@ namespace detail
         }
 
     private:
-        accumulator_visitor &operator =(accumulator_visitor const &);
+        BOOST_DELETED_FUNCTION(accumulator_visitor &operator =(accumulator_visitor const &))
         Args const &args;
     };
 

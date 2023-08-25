@@ -34,6 +34,11 @@ namespace boost { namespace accumulators
             {
             }
 
+            add_ref_visitor(add_ref_visitor const &other)
+              : args_(other.args_)
+            {
+            }
+
             template<typename Accumulator>
             void operator ()(Accumulator &acc) const
             {

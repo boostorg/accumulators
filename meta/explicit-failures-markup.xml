@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<explicit-failures-markup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/boostorg/boost/master/status/explicit-failures.xsd">
+    <!-- accumulators -->
+    <library name="accumulators">
+      <mark-unusable>
+        <toolset name="sun-5.7"/>
+        <toolset name="sun-5.8"/>
+        <toolset name="sun-5.9"/>
+        <toolset name="borland-*"/>
+        <toolset name="vacpp-*"/>
+        <toolset name="cray-*"/>
+      </mark-unusable>
+      <mark-expected-failures>
+          <test name="tail_variate_means"/>
+          <test name="weighted_tail_variate_means"/>
+          <toolset name="gcc-4.2.1*"/>
+          <note author="Boris Gubenko" refid="42"/>
+      </mark-expected-failures>
+      <mark-expected-failures>
+          <test name="weighted_kurtosis"/>
+          <toolset name="acc"/>
+          <note author="Boris Gubenko" refid="38"/>
+      </mark-expected-failures>
+      <mark-expected-failures>
+        <test name="weighted_tail_variate_means"/>
+        <toolset name="hp_cxx-71*"/>
+        <note author="Markus Schoepflin">
+          This failure is caused by a timeout when compiling the test. It
+          passes when the timeout value is increased.
+        </note>
+      </mark-expected-failures>
+      <mark-expected-failures>
+        <test name="covariance"/>
+        <test name="pot_quantile"/>
+        <test name="tail_variate_means"/>
+        <test name="weighted_covariance"/>
+        <test name="weighted_pot_quantile"/>
+        <test name="weighted_tail_variate_means"/>
+        <toolset name="acc"/>
+        <note author="Boris Gubenko" refid="47"/>
+      </mark-expected-failures>
+    </library>
+</explicit-failures-markup>

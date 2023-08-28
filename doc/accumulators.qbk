@@ -2077,6 +2077,109 @@ The rolling count is the current number of elements in the rolling window.
 
 [endsect]
 
+[section:rolling_max rolling_max]
+
+The rolling max is the max of the last /N/ samples.
+
+[variablelist
+    [[Result Type] [``_sample_type_``]]
+    [[Depends On] [`lazy_rolling_max` depends on `rolling_window` \n
+                   `immediate_rolling_max` depends on `sorted_rolling_window`]]
+    [[Variants] [`lazy_rolling_max` (a.k.a. `rolling_max(lazy)`) \n
+                 `immediate_rolling_max` (a.k.a. `rolling_max(immediate)`)]]
+    [[Initialization Parameters] [`tag::rolling_window::window_size`]]
+    [[Accumulator Parameters] [['none]]]
+    [[Extractor Parameters] [['none]]]
+    [[Accumulator Complexity] [`lazy_rolling_max` is O(1) \n
+                               `immediate_rolling_max` is O(log N), where N is the window size]]
+    [[Extractor Complexity] [`lazy_rolling_max` is O(N), where N is the window size \n
+                             `immediate_rolling_max` is O(1)]]
+]
+
+[*Header]
+[def _ROLLING_MAX_HPP_ [headerref boost/accumulators/statistics/rolling_max.hpp]]
+
+    #include <_ROLLING_MAX_HPP_>
+
+[*Example]
+
+    accumulator_set<int, stats<tag::rolling_max> > acc(tag::rolling_window::window_size = 3);
+
+    acc(1);
+    BOOST_CHECK_EQUAL(1, rolling_max(acc));
+
+    acc(2);
+    BOOST_CHECK_EQUAL(2, rolling_max(acc));
+
+    acc(3);
+    BOOST_CHECK_EQUAL(3, rolling_max(acc));
+
+    acc(1);
+    BOOST_CHECK_EQUAL(3, rolling_max(acc));
+
+    acc(-1);
+    BOOST_CHECK_EQUAL(1, rolling_max(acc));
+
+    acc(0);
+    BOOST_CHECK_EQUAL(1, rolling_max(acc));
+
+[*See also]
+
+* [classref boost::accumulators::impl::lazy_rolling_max_impl [^lazy_rolling_max_impl]]
+* [classref boost::accumulators::impl::immediate_rolling_max_impl [^immediate_rolling_max_impl]]
+
+[endsect]
+
+[section:rolling_min rolling_min]
+
+The rolling min is the min of the last /N/ samples.
+
+[variablelist
+    [[Result Type] [``_sample_type_``]]
+    [[Depends On] [`lazy_rolling_min` depends on `rolling_window` \n
+                   `immediate_rolling_min` depends on `sorted_rolling_window`]]
+    [[Variants] [`lazy_rolling_min` (a.k.a. `rolling_min(lazy)`) \n
+                 `immediate_rolling_min` (a.k.a. `rolling_min(immediate)`)]]
+    [[Initialization Parameters] [`tag::rolling_window::window_size`]]
+    [[Accumulator Parameters] [['none]]]
+    [[Extractor Parameters] [['none]]]
+    [[Accumulator Complexity] [`lazy_rolling_min` is O(1) \n
+                               `immediate_rolling_min` is O(log N), where N is the window size]]
+    [[Extractor Complexity] [`lazy_rolling_min` is O(N), where N is the window size \n
+                             `immediate_rolling_min` is O(1)]]
+]
+
+[*Header]
+[def _ROLLING_MIN_HPP_ [headerref boost/accumulators/statistics/rolling_min.hpp]]
+
+    #include <_ROLLING_MIN_HPP_>
+
+[*Example]
+
+    accumulator_set<int, stats<tag::rolling_min> > acc(tag::rolling_window::window_size = 3);
+
+    acc(1);
+    BOOST_CHECK_EQUAL(1, rolling_min(acc));
+
+    acc(2);
+    BOOST_CHECK_EQUAL(1, rolling_min(acc));
+
+    acc(3);
+    BOOST_CHECK_EQUAL(1, rolling_min(acc));
+
+    acc(4);
+    BOOST_CHECK_EQUAL(2, rolling_min(acc));
+
+    acc(-1);
+    BOOST_CHECK_EQUAL(-1, rolling_min(acc));
+
+[*See also]
+
+* [classref boost::accumulators::impl::lazy_rolling_min_impl [^lazy_rolling_min_impl]]
+* [classref boost::accumulators::impl::immediate_rolling_min_impl [^immediate_rolling_min_impl]]
+
+[endsect]
+
 [section:rolling_sum rolling_sum]
 
 The rolling sum is the sum of the last /N/ samples. 

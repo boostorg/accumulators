@@ -84,7 +84,8 @@ run weighted_variance.cpp ;
 
 # alias accumulators_test_valarray
 
-run valarray.cpp ;
+# fails under libc++
+run valarray.cpp : : : <target-os>darwin:<build>no ;
 
 # alias accumulators_test_tail_variate_means
 

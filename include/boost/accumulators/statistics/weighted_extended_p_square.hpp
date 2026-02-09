@@ -211,11 +211,9 @@ namespace impl
                     float_type hp = (this->heights[i + 1] - this->heights[i]) / dp;
                     float_type hm = (this->heights[i - 1] - this->heights[i]) / dm;
 
-                    if((d >= 1 && dp > 1) || (d <= -1 && dm < -1))
+                    if((d >= args[weight] && dp > args[weight]) || (d <= -args[weight] && dm < -args[weight]))
                     {
-                        short sign_d = static_cast<short>(d / std::abs(d));
-
-                        float_type h = this->heights[i] + sign_d / (dp - dm) * ((sign_d - dm)*hp + (dp - sign_d) * hm);
+                        float_type h = this->heights[i] + d / (dp - dm) * ((d - dm) * hp + (dp - d) * hm);
 
                         // try adjusting heights[i] using p-squared formula
                         if(this->heights[i - 1] < h && h < this->heights[i + 1])
@@ -227,14 +225,14 @@ namespace impl
                             // use linear formula
                             if(d > 0)
                             {
-                                this->heights[i] += hp;
+                                this->heights[i] += args[weight] * hp;
                             }
                             if(d < 0)
                             {
-                                this->heights[i] -= hm;
+                                this->heights[i] -= args[weight] * hm;
                             }
                         }
-                        this->actual_positions[i] += sign_d;
+                        this->actual_positions[i] += d;
                     }
                 }
             }

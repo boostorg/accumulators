@@ -24,7 +24,6 @@ target_link_libraries(boost_accumulators
     Boost::iterator
     Boost::mpl
     Boost::numeric_conversion
-    Boost::numeric_ublas
     Boost::parameter
     Boost::preprocessor
     Boost::range

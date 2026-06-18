@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <functional>
+#include <sstream>
 #include <boost/throw_exception.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
@@ -192,7 +193,7 @@ namespace impl
         // TODO: do we need to split to load/save and verify that the parameters did not change?
         template<class Archive>
         void serialize(Archive & ar, const unsigned int file_version)
-        { 
+        {
             ar & probabilities;
             ar & probability;
         }

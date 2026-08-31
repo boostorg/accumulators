@@ -72,6 +72,7 @@ test-suite "accumulators"
       [ run weighted_pot_quantile.cpp ]
       [ run weighted_tail_mean.cpp ]
       [ run weighted_tail_quantile.cpp ]
-      [ run weighted_tail_variate_means.cpp ]
+      [ run weighted_tail_variate_me
+ans.cpp ]
 
-    ;
+    ;https://github.com/boostorg/accumulators.git

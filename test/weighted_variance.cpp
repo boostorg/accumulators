@@ -68,6 +68,42 @@ void test_stat()
     BOOST_CHECK_CLOSE(1., weighted_variance(acc_immediate), 5.);
 }
 
+template<typename Weight>
+void check_zero_weight_variance()
+{
+    accumulator_set<double, stats<tag::weighted_variance>, Weight> acc;
+    acc(99., weight = Weight(0));
+    acc(-99., weight = Weight(0));
+    acc(2., weight = Weight(1));
+    BOOST_CHECK_EQUAL(3u, count(acc));
+    BOOST_CHECK_EQUAL(2., weighted_mean(acc));
+    BOOST_CHECK_SMALL(weighted_variance(acc), 1e-12);
+
+    acc(4., weight = Weight(1));
+    BOOST_CHECK_EQUAL(3., weighted_mean(acc));
+    BOOST_CHECK_EQUAL(1., weighted_variance(acc));
+
+    // A zero-weight value must be ignored before squaring its deviation.
+    acc(1e200, weight = Weight(0));
+    BOOST_CHECK_EQUAL(3., weighted_mean(acc));
+    BOOST_CHECK_EQUAL(1., weighted_variance(acc));
+
+    acc(6., weight = Weight(2));
+    BOOST_CHECK_EQUAL(4.5, weighted_mean(acc));
+    BOOST_CHECK_EQUAL(2.75, weighted_variance(acc));
+
+    acc(-1e200, weight = Weight(-0.0));
+    BOOST_CHECK_EQUAL(4.5, weighted_mean(acc));
+    BOOST_CHECK_EQUAL(2.75, weighted_variance(acc));
+    BOOST_CHECK_EQUAL(7u, count(acc));
+}
+
+void test_zero_weight_variance()
+{
+    check_zero_weight_variance<int>();
+    check_zero_weight_variance<double>();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // init_unit_test_suite
 //
@@ -76,6 +112,7 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
     test_suite *test = BOOST_TEST_SUITE("weighted_variance test");
 
     test->add(BOOST_TEST_CASE(&test_stat));
+    test->add(BOOST_TEST_CASE(&test_zero_weight_variance));
 
     return test;
 }

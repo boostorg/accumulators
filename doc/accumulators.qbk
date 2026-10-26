@@ -3201,6 +3201,9 @@ is the default. For more implementation details, see
 [classref boost::accumulators::impl::weighted_mean_impl [^weighted_mean_impl]] or.
 [classref boost::accumulators::impl::immediate_weighted_mean_impl [^immediate_weighted_mean_impl]]
 
+The immediate implementation ignores samples with zero weight. A weighted mean is
+undefined when the sum of weights is zero.
+
 [variablelist
     [[Result Type] [For samples, `numeric::functional::fdiv<numeric::functional::multiplies<_sample_type_, _weight_type_>::result_type, _weight_type_>::result_type` \n
                     For variates, `numeric::functional::fdiv<numeric::functional::multiplies<_variate_type_, _weight_type_>::result_type, _weight_type_>::result_type`]]
@@ -4063,6 +4066,9 @@ feature, and the iterative calculation with the `tag::weighted_variance` feature
 using the `tag::weighted_variance()` extractor. For more implementation details, see
 [classref boost::accumulators::impl::lazy_weighted_variance_impl [^lazy_weighted_variance_impl]] and
 [classref boost::accumulators::impl::weighted_variance_impl [^weighted_variance_impl]]
+
+The immediate implementation ignores samples with zero weight. The variance is
+undefined when the sum of weights is zero.
 
 [variablelist
     [[Result Type] [``

@@ -88,8 +88,11 @@ namespace impl
             //  accumulator set passed as a named parameter
             Weight w_sum = sum_of_weights(args);
             Weight w = args[weight];
-            weighted_sample const &s = args[parameter::keyword<Tag>::get()] * w;
-            this->mean = numeric::fdiv(this->mean * (w_sum - w) + s, w_sum);
+            if (w != numeric::zero<Weight>::value)
+            {
+                weighted_sample const &s = args[parameter::keyword<Tag>::get()] * w;
+                this->mean = numeric::fdiv(this->mean * (w_sum - w) + s, w_sum);
+            }
         }
 
         result_type result(dont_care) const

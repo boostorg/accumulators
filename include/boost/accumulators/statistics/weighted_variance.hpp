@@ -66,6 +66,7 @@ namespace impl
         where \f$\bar{w}_n\f$ is the sum of the \f$n\f$ weights \f$w_i\f$ and \f$\hat{\mu}_n\f$
         the estimate of the mean of the weighted samples. Note that the sample variance is not defined for
         \f$n <= 1\f$.
+        Zero-weight samples do not change the result. The recurrence requires a nonzero previous total weight.
     */
     template<typename Sample, typename Weight, typename MeanFeature, typename Tag>
     struct weighted_variance_impl
@@ -86,7 +87,8 @@ namespace impl
         {
             std::size_t cnt = count(args);
 
-            if(cnt > 1)
+            if(cnt > 1 && args[weight] != numeric::zero<Weight>::value
+                && sum_of_weights(args) != args[weight])
             {
                 extractor<MeanFeature> const some_mean = {};
 

@@ -89,6 +89,35 @@ void test_stat()
     assert_is_double(mean(acc2));
 }
 
+template<typename Weight>
+void check_zero_weight_mean()
+{
+    accumulator_set<double, stats<
+        tag::weighted_mean(immediate),
+        tag::weighted_mean_of_variates<double, tag::covariate1>(immediate),
+        tag::count>, Weight> acc;
+
+    acc(99., weight = Weight(0), covariate1 = 999.);
+    acc(2., weight = Weight(3), covariate1 = 4.);
+    BOOST_CHECK_EQUAL(2., weighted_mean(acc));
+    BOOST_CHECK_EQUAL(4., (accumulators::weighted_mean_of_variates<double, tag::covariate1>(acc)));
+
+    acc(4., weight = Weight(1), covariate1 = 8.);
+    BOOST_CHECK_EQUAL(2.5, weighted_mean(acc));
+    BOOST_CHECK_EQUAL(5., (accumulators::weighted_mean_of_variates<double, tag::covariate1>(acc)));
+
+    acc(1e200, weight = Weight(0), covariate1 = -1e200);
+    BOOST_CHECK_EQUAL(2.5, weighted_mean(acc));
+    BOOST_CHECK_EQUAL(5., (accumulators::weighted_mean_of_variates<double, tag::covariate1>(acc)));
+    BOOST_CHECK_EQUAL(4u, count(acc));
+}
+
+void test_zero_weight_mean()
+{
+    check_zero_weight_mean<int>();
+    check_zero_weight_mean<double>();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // init_unit_test_suite
 //
@@ -97,6 +126,7 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
     test_suite *test = BOOST_TEST_SUITE("weighted_mean test");
 
     test->add(BOOST_TEST_CASE(&test_stat));
+    test->add(BOOST_TEST_CASE(&test_zero_weight_mean));
 
     return test;
 }
